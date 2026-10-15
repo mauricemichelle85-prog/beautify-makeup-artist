@@ -1,0 +1,25 @@
+[build]
+  command = "bun run build:netlify"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Use the official Next.js Runtime (auto-detected, but pin the version for reproducibility)
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Force HTTPS in production
+[[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+# Long-cache Next.js static assets
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
